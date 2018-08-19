@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GGPlatform.Application\GGPlatform.Application.csproj" />
+    <ProjectReference Include="..\GGPlatform.Common\GGPlatform.Common.csproj" />
+    <ProjectReference Include="..\GGPlatform.Infrastructure\GGPlatform.Infrastructure.csproj" />
+    <ProjectReference Include="..\GGPlatoform.Domain\GGPlatoform.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
