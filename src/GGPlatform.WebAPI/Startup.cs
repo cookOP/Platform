@@ -4,6 +4,9 @@ using GGPlatform.Infrastructure.Data;
 using GGPlatform.Infrastructure.Repository;
 using GGPlatoform.Domain.Entity.User;
 using GGPlatoform.Domain.Interface;
+using log4net;
+using log4net.Config;
+using log4net.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,15 +18,24 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 using System.Text;
 
 namespace GGPlatform.WebAPI
 {
     public class Startup
     {
+        public static ILoggerRepository repository
+        {
+            get; set;
+        }
         public Startup(IConfiguration configuration)
         {
+            repository = LogManager.CreateRepository("NETCoreRepository");
+            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));          
+
             Configuration = configuration;
         }
 
@@ -65,7 +77,14 @@ namespace GGPlatform.WebAPI
             {
                 options.TokenValidationParameters = tokenValidationParameters;
             });
-            #endregion 
+            #endregion
+
+            #region Swagger 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "GGPlatform", Version = "v1" });
+            });
+            #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
            
@@ -77,7 +96,13 @@ namespace GGPlatform.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }  
+            }
+            app.UseSwagger();
+            
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TwBusManagement API V1");               
+            });
             //用户授权
             app.UseAuthentication();
             app.UseMvc();
