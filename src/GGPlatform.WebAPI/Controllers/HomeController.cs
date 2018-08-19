@@ -10,19 +10,21 @@ using GGPlatform.WebAPI.Model;
 using GGPlatoform.Domain.Entity.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GGPlatform.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class HomeController : ControllerBase
     {
         private readonly IUserService _userService;
-        public HomeController(IUserService userService)
+        private readonly IConfiguration _configuration;
+        public HomeController(IUserService userService, IConfiguration configuration)
         {
             _userService = userService;
+            _configuration = configuration;
         }
         [HttpPost]
         [Route("Login")]
@@ -37,25 +39,21 @@ namespace GGPlatform.WebAPI.Controllers
                 return Ok(resultData);
             }
             else
-            {
+            {             
                 resultData.State = Enum.Status.Succeed.ToString();
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@123456"));
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
                 var tokeOptions = new JwtSecurityToken(
-                    issuer: "http://localhost:5000",
-                    audience: "http://localhost:5000",
-                    claims: new List<Claim>(),
-                    expires: DateTime.Now.AddMinutes(5),
+                    issuer: _configuration["Jwt:Issuer"],
+                    audience: _configuration["Jwt:Issuer"],
+                    expires: DateTime.Now.AddMinutes(10),                            
                     signingCredentials: signinCredentials
                 );
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                 var obj = new
                 {
                     access_token = tokenString
-                    ,
-                    state = "Succeed"
-
+                    ,state = Enum.Status.Succeed.ToString()
                 };
                 return Ok(obj); ;
             }

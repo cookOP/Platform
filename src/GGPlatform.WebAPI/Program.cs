@@ -19,6 +19,8 @@ namespace GGPlatform.WebAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseUrls("http://localhost:5000")
                 .UseStartup<Startup>();
     }
 }

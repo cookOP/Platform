@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GGPlatform.Application.IService;
 using GGPlatform.WebAPI.Model;
 using GGPlatoform.Domain.Entity.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GGPlatform.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController]    
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -22,6 +18,7 @@ namespace GGPlatform.WebAPI.Controllers
         }
         [HttpPost]
         [Route("AddUser")]
+        [Authorize]
         public IActionResult AddUser([FromBody]Users users) {
             if (string.IsNullOrEmpty(users.UserName)) return Ok("用户名不能为空!");
             if (string.IsNullOrEmpty(users.Password)) return Ok("密码不能为空!");
@@ -29,12 +26,15 @@ namespace GGPlatform.WebAPI.Controllers
             users.LastUpdateTime = DateTime.Now;
             users.CreateTime = DateTime.Now;
             _userService.Insert(users);
-            return Ok("成功");
+            ReusltData reusltData = new ReusltData();          
+            reusltData.State = Enum.Status.Succeed.ToString();
+            reusltData.Data =null;
+            return Ok(reusltData);
         }
         [HttpGet]
-        [Route("GetUserAll")] 
+        [Route("GetAllUser")] 
         [Authorize]
-        public IActionResult GetUser()
+        public IActionResult GetAllUser()
         {
             ReusltData reusltData = new ReusltData();
             reusltData.State = Enum.Status.Succeed.ToString();
