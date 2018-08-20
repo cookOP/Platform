@@ -1,11 +1,11 @@
-﻿using GGPlatoform.Domain.Entity.User;
+﻿using GGPlatoform.Domain.Entity;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace GGPlatform.Application.IService
 {
-    interface IAuthorityManagementService : IServiceBase<Users>
+   public interface IAuthorityManagementService : IServiceBase<Menu>
     {
     }
 }

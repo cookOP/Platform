@@ -33,7 +33,7 @@ namespace GGPlatform.WebAPI.Controllers
         [Route("Login")]
         public IActionResult Login([FromBody] Users usersModel)
         {
-            ReusltData resultData = new ReusltData();
+            ResultData resultData = new ResultData();
             try
             {
                

@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace GGPlatform.WebAPI.Model
 {
-    public class ReusltData
+    public class ResultData
     {
+        public ResultData()
+        {
+            State = Status.Succeed.ToString();
+        }
         public string State { get; set; }
         public object Data { get; set; }
         public string Msg { get; set; }

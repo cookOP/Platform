@@ -32,7 +32,7 @@ namespace GGPlatform.WebAPI.Controllers
             users.LastUpdateTime = DateTime.Now;
             users.CreateTime = DateTime.Now;
             _userService.Insert(users);
-            ReusltData reusltData = new ReusltData();          
+            ResultData reusltData = new ResultData();          
             reusltData.State = Enum.Status.Succeed.ToString();
             reusltData.Data =null;
             return Ok(reusltData);
@@ -43,9 +43,9 @@ namespace GGPlatform.WebAPI.Controllers
         [Authorize]        
         public IActionResult GetAllUser()
         {
-            ReusltData reusltData = new ReusltData();
+            ResultData reusltData = new ResultData();
             reusltData.State = Enum.Status.Succeed.ToString();           
-            reusltData.Data = Mapper.Map<UserDto>(_userService.GetAll());
+            reusltData.Data = Mapper.Map<UserDto>(_userService.GetAllList());
             return Ok(reusltData);
         }
        

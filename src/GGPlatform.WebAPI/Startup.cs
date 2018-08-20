@@ -56,8 +56,14 @@ namespace GGPlatform.WebAPI
                         options.UseMySql(Configuration["ConnectionStrings:Dbconnection"]));
                     break;
             }
+            #region IOC
             services.AddScoped<IUser, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthorityManagement, AuthorityManagementRepository>();
+            services.AddScoped<IAuthorityManagementService, AuthorityManagementService>();
+            #endregion
+
+            #region Json 
             services.AddMvc().AddJsonOptions(options =>
             {
                 //忽略循环引用
@@ -66,8 +72,9 @@ namespace GGPlatform.WebAPI
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
+            #endregion
 
-            # region JWT           
+            #region JWT           
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -97,11 +104,11 @@ namespace GGPlatform.WebAPI
             #region AutoMapper
             //install-package   AutoMapper
             //install - package   AutoMapper.Extensions.Microsoft.DependencyInjection
-            _mapperConfiguration = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new AutomapperProfile());
-            });
-            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+            //_mapperConfiguration = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.AddProfile(new AutomapperProfile());
+            //});
+            //services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
             services.AddAutoMapper();
             #endregion
 
@@ -121,7 +128,7 @@ namespace GGPlatform.WebAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "TwBusManagement API V1");
             });
             //AutoMapper 自己定义注册
-            // Mappings.RegisterMappings();
+             Mappings.RegisterMappings();
             //用户授权
             app.UseAuthentication();
             app.UseMvc();
