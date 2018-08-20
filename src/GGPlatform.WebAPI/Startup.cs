@@ -1,7 +1,9 @@
-﻿using GGPlatform.Application.IService;
+﻿using AutoMapper;
+using GGPlatform.Application.IService;
 using GGPlatform.Application.Service;
 using GGPlatform.Infrastructure.Data;
 using GGPlatform.Infrastructure.Repository;
+using GGPlatform.WebAPI.AutoMapper;
 using GGPlatoform.Domain.Entity.User;
 using GGPlatoform.Domain.Interface;
 using log4net;
@@ -34,23 +36,28 @@ namespace GGPlatform.WebAPI
         public Startup(IConfiguration configuration)
         {
             repository = LogManager.CreateRepository("NETCoreRepository");
-            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));          
+            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
 
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
-
+        private MapperConfiguration _mapperConfiguration { get; set; }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //SqlServer 
-            //services.AddDbContext<GGPatlformContext>(options => options.UseSqlServer(connection));
-            //MySql
-            services.AddDbContext<GGPatlformContext>(options =>
-                options.UseMySql(Configuration["ConnectionStrings:Dbconnection"]));
+            switch (Configuration["ConnectionStrings:Type"])
+            {
+                case "SqlServer":
+                    services.AddDbContext<GGPatlformContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Dbconnection"]));
+                    break;
+                case "MySql":
+                    services.AddDbContext<GGPatlformContext>(options =>
+                        options.UseMySql(Configuration["ConnectionStrings:Dbconnection"]));
+                    break;
+            }
             services.AddScoped<IUser, UserRepository>();
-            services.AddScoped<IUserService, UserService>();          
+            services.AddScoped<IUserService, UserService>();
             services.AddMvc().AddJsonOptions(options =>
             {
                 //忽略循环引用
@@ -60,9 +67,8 @@ namespace GGPlatform.WebAPI
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
 
-            # region 注入JWT
-            //注入JWT
-            var tokenValidationParameters =  new TokenValidationParameters
+            # region JWT           
+            var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
@@ -87,7 +93,18 @@ namespace GGPlatform.WebAPI
             #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-           
+
+            #region AutoMapper
+            //install-package   AutoMapper
+            //install - package   AutoMapper.Extensions.Microsoft.DependencyInjection
+            _mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutomapperProfile());
+            });
+            services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+            services.AddAutoMapper();
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,11 +115,13 @@ namespace GGPlatform.WebAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseSwagger();
-            
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TwBusManagement API V1");               
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TwBusManagement API V1");
             });
+            //AutoMapper 自己定义注册
+            // Mappings.RegisterMappings();
             //用户授权
             app.UseAuthentication();
             app.UseMvc();

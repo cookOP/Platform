@@ -21,7 +21,7 @@ namespace GGPlatform.Application.Service
 
         public void Delete(Users model)
         {
-            throw new NotImplementedException();
+            _user.Delete(model);
         }
 
         public IQueryable<Users> GetAll()
@@ -31,22 +31,22 @@ namespace GGPlatform.Application.Service
 
         public List<Users> GetAllList()
         {
-            throw new NotImplementedException();
+            return _user.GetAllList();
         }
 
         public List<Users> GetAllList(Expression<Func<Users, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _user.GetAllList(predicate);
         }
 
-        public Task<List<Users>> GetAllListAsync()
+        public async Task<List<Users>> GetAllListAsync()
         {
-            throw new NotImplementedException();
+            return await _user.GetAllListAsync();
         }
 
         public Users GetById(object id)
         {
-            throw new NotImplementedException();
+            return _user.GetById(id);
         }
 
         public void Insert(Users model)
@@ -56,7 +56,7 @@ namespace GGPlatform.Application.Service
 
         public void Update(Users model)
         {
-            throw new NotImplementedException();
+            _user.Update(model);
         }
     }
 }
