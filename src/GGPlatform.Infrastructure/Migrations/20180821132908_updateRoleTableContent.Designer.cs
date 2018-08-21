@@ -3,14 +3,16 @@ using System;
 using GGPlatform.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GGPlatform.Infrastructure.Migrations
 {
     [DbContext(typeof(GGPatlformContext))]
-    partial class GGPatlformContextModelSnapshot : ModelSnapshot
+    [Migration("20180821132908_updateRoleTableContent")]
+    partial class updateRoleTableContent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

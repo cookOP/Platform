@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using GGPlatform.Application.IService;
 using GGPlatform.WebAPI.Model;
 using GGPlatoform.Domain.Entity.User;
 using log4net;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -58,8 +54,7 @@ namespace GGPlatform.WebAPI.Controllers
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                     var obj = new
                     {
-                        access_token = tokenString
-                        ,
+                        access_token = tokenString ,
                         state = Enum.Status.Succeed.ToString()
                     };
                     log.Info("登陆成功,用户名：" + usersModel.UserName);

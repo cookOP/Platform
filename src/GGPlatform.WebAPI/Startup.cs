@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using GGPlatform.Application.IService;
 using GGPlatform.Application.Service;
+using GGPlatform.Infrastructure;
 using GGPlatform.Infrastructure.Data;
 using GGPlatform.Infrastructure.Repository;
 using GGPlatform.WebAPI.AutoMapper;
-using GGPlatoform.Domain.Entity.User;
 using GGPlatoform.Domain.Interface;
 using log4net;
 using log4net.Config;
@@ -19,9 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
 using System.IO;
 using System.Text;
 
@@ -57,10 +55,12 @@ namespace GGPlatform.WebAPI
                     break;
             }
             #region IOC
-            services.AddScoped<IUser, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthorityManagement, AuthorityManagementRepository>();
+            services.AddScoped<IAuthorityManagementRepository, AuthorityManagementRepository>();
             services.AddScoped<IAuthorityManagementService, AuthorityManagementService>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRoleService, RoleService>();
             #endregion
 
             #region Json 

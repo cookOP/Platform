@@ -22,15 +22,18 @@ namespace GGPlatform.WebAPI.Controllers
         private readonly IMapper _mapper;
         private readonly ILog log;
         private readonly IAuthorityManagementService _authorityManagementService;
-        public AuthorityManagementController(IAuthorityManagementService authorityManagementService, IMapper mapper)
+        private readonly IRoleService _roleService;
+        public AuthorityManagementController(IMapper mapper, IAuthorityManagementService authorityManagementService, IRoleService roleService)
         {
             _mapper = mapper;
             log = LogManager.GetLogger(Startup.repository.Name, typeof(AuthorityManagementController)); ;
             _authorityManagementService = authorityManagementService;
+            _roleService = roleService;
         }
+
         [Route("AddMenu")]
         [HttpPost]
-       // [Authorize]
+        [Authorize]
         public IActionResult AddMenu([FromBody] Menu  menu) {
             var resultData= new ResultData();
             try
@@ -47,6 +50,31 @@ namespace GGPlatform.WebAPI.Controllers
             {
                 resultData.State = Status.Fail.ToString();
                 resultData.Msg = "添加菜单失败！";
+                log.Error($"添加菜单错误信息：{ex}");
+                throw;
+            }
+            return Ok(resultData);
+        }
+        [Route("AddRole")]
+        [HttpPost]
+        //[Authorize]
+        public IActionResult AddRole([FromBody] Role role) {       
+            ResultData resultData = new ResultData();
+
+            try
+            {
+                role.ID = Snowflake.Instance().GetId();
+                role.CreateTime = DateTime.Now;
+                role.LastUpdateTime = DateTime.Now;
+
+                _roleService.Insert(role);
+                log.Info($"添加成功");
+                resultData.Data = null;
+            }
+            catch (Exception ex)
+            {
+                resultData.State = Status.Fail.ToString();
+                resultData.Msg = "添加角色失败！";
                 log.Error($"添加菜单错误信息：{ex}");
                 throw;
             }

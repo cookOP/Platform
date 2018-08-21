@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GGPlatoform.Domain.Interface
+namespace GGPlatform.Application.IService
 {
-    public interface IAuthorityManagement : IRepositoryBase<Menu>
+    public interface IRoleService : IServiceBase<Role>
     {
+    
     }
 }

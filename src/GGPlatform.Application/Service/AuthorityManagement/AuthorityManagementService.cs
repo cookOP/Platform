@@ -1,20 +1,18 @@
 ﻿using GGPlatform.Application.IService;
 using GGPlatoform.Domain.Entity;
-using GGPlatoform.Domain.Entity.User;
 using GGPlatoform.Domain.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GGPlatform.Application.Service
 {
    public class AuthorityManagementService : IAuthorityManagementService
     {
-        private readonly IAuthorityManagement _authorityManagement;
-        public AuthorityManagementService(IAuthorityManagement authorityManagement)
+        private readonly IAuthorityManagementRepository _authorityManagement;
+        public AuthorityManagementService(IAuthorityManagementRepository authorityManagement)
         {
             _authorityManagement = authorityManagement;
         }

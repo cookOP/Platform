@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GGPlatform.Infrastructure.Migrations
 {
     [DbContext(typeof(GGPatlformContext))]
-    [Migration("20180820161257_addMenuTable")]
-    partial class addMenuTable
+    [Migration("20180820174250_AddUsersTableDefaultData")]
+    partial class AddUsersTableDefaultData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,32 @@ namespace GGPlatform.Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Menu");
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("GGPlatoform.Domain.Entity.Role", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateTime");
+
+                    b.Property<byte>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue((byte)0);
+
+                    b.Property<DateTime>("LastUpdateTime");
+
+                    b.Property<string>("MenuPermissionID")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("GGPlatoform.Domain.Entity.User.Users", b =>
@@ -93,11 +118,11 @@ namespace GGPlatform.Infrastructure.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { ID = 3552129114129301505L, Age = 31, CreateTime = new DateTime(2018, 8, 21, 0, 12, 57, 196, DateTimeKind.Local), Genders = 1, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 0, 12, 57, 196, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "ZhangSan" },
-                        new { ID = 3552129114133495809L, Age = 21, CreateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), Genders = 2, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "LiLi" },
-                        new { ID = 3552129114133495811L, Age = 18, CreateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), Genders = 1, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "WangWu" },
-                        new { ID = 3552129114133495813L, Age = 25, CreateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), Genders = 1, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "Cook" },
-                        new { ID = 3552129114133495815L, Age = 25, CreateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), Genders = 2, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 0, 12, 57, 197, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "XiaoLi" }
+                        new { ID = 3552151734849634305L, Age = 31, CreateTime = new DateTime(2018, 8, 21, 1, 42, 50, 396, DateTimeKind.Local), Genders = 1, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 1, 42, 50, 396, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "ZhangSan" },
+                        new { ID = 3552151734853828609L, Age = 21, CreateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), Genders = 2, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "LiLi" },
+                        new { ID = 3552151734853828611L, Age = 18, CreateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), Genders = 1, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "WangWu" },
+                        new { ID = 3552151734853828613L, Age = 25, CreateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), Genders = 1, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "Cook" },
+                        new { ID = 3552151734853828615L, Age = 25, CreateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), Genders = 2, IsEnabled = 0, LastUpdateTime = new DateTime(2018, 8, 21, 1, 42, 50, 397, DateTimeKind.Local), LoginCount = 0, LookCount = 0, LookTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Password = "123456", UserName = "XiaoLi" }
                     );
                 });
 #pragma warning restore 612, 618

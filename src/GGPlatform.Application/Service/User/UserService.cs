@@ -12,8 +12,8 @@ namespace GGPlatform.Application.Service
 {
     public class UserService : IUserService
     {
-        private readonly IUser _user;
-        public UserService(IUser user)
+        private readonly IUserRepository _user;
+        public UserService(IUserRepository user)
         {
             _user = user;
         }

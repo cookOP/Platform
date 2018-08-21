@@ -15,6 +15,8 @@ namespace GGPlatform.Infrastructure.Data
         public GGPatlformContext(DbContextOptions<GGPatlformContext> options) : base(options) { }
 
         public DbSet<Users> Users { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {          
@@ -45,13 +47,22 @@ namespace GGPlatform.Infrastructure.Data
                 a.Property(b => b.LastUpdateTime).IsRequired();
                
             });
-            
-            //modelBuilder.Entity<Users>().HasData(
-            //    new Users { ID = Snowflake.Instance().GetId(), UserName = "ZhangSan", Password = "123456", Genders = Gender.Male, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 31, LoginCount = 0 },
-            //    new Users { ID = Snowflake.Instance().GetId(), UserName = "LiLi", Password = "123456", Genders = Gender.Female, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 21, LoginCount = 0 },
-            //    new Users { ID = Snowflake.Instance().GetId(), UserName = "WangWu", Password = "123456", Genders = Gender.Male, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 18, LoginCount = 0 },
-            //    new Users { ID = Snowflake.Instance().GetId(), UserName = "Cook", Password = "123456", Genders = Gender.Male, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 25, LoginCount = 0 },
-            //    new Users { ID = Snowflake.Instance().GetId(), UserName = "XiaoLi", Password = "123456", Genders = Gender.Female, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 25, LoginCount = 0 });
+            modelBuilder.Entity<Role>(a =>
+            {
+                a.HasKey(b => b.ID);
+                a.Property(b => b.Name).HasMaxLength(50).IsRequired();
+                a.Property(b => b.MenuPermissionID).IsRequired();
+                a.Property(b => b.IsDelete).HasDefaultValue(0).IsRequired();               
+                a.Property(b => b.CreateTime).IsRequired();
+                a.Property(b => b.LastUpdateTime).IsRequired();
+
+            });
+            modelBuilder.Entity<Users>().HasData(
+                new Users { ID = Snowflake.Instance().GetId(), UserName = "ZhangSan", Password = "123456", Genders = Gender.Male, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 31, LoginCount = 0 },
+                new Users { ID = Snowflake.Instance().GetId(), UserName = "LiLi", Password = "123456", Genders = Gender.Female, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 21, LoginCount = 0 },
+                new Users { ID = Snowflake.Instance().GetId(), UserName = "WangWu", Password = "123456", Genders = Gender.Male, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 18, LoginCount = 0 },
+                new Users { ID = Snowflake.Instance().GetId(), UserName = "Cook", Password = "123456", Genders = Gender.Male, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 25, LoginCount = 0 },
+                new Users { ID = Snowflake.Instance().GetId(), UserName = "XiaoLi", Password = "123456", Genders = Gender.Female, CreateTime = DateTime.Now, LastUpdateTime = DateTime.Now, Age = 25, LoginCount = 0 });
         }
     }
 }
