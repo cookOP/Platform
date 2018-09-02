@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GGPlatform.Application.IService
 {
-    public interface IServiceBase<T> where T : class
+    public interface IServiceBase<T,DTO> where T : class
     {
         #region Select/Get/Query
 
@@ -20,7 +20,7 @@ namespace GGPlatform.Application.IService
         /// 用来获取所有实体
         /// </summary>
         /// <returns>所有实体的List集合</returns>
-        List<T> GetAllList();
+        List<DTO> GetAllList();
         /// <summary>
         ///  用来获取所有实体
         /// </summary>

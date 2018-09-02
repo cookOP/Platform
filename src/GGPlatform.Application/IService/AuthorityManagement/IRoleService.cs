@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GGPlatform.Application.IService
 {
-    public interface IRoleService : IServiceBase<Role>
+    public interface IRoleService : IServiceBase<Role,object>
     {
     
     }

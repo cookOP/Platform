@@ -21,7 +21,7 @@ namespace GGPlatform.WebAPI.Controllers
         private readonly IConfiguration _configuration;
         public HomeController(IUserService userService, IConfiguration configuration)
         {
-            log = LogManager.GetLogger(Startup.repository.Name, typeof(HomeController));
+            log = LogManager.GetLogger(Startup._repository.Name, typeof(HomeController));
             _userService = userService;
             _configuration = configuration;
         }

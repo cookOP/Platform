@@ -7,6 +7,7 @@ using GGPlatform.Application.IService;
 using GGPlatform.Common.SnowflakeToTwitter;
 using GGPlatform.WebAPI.Enum;
 using GGPlatform.WebAPI.Model;
+using GGPlatform.WebAPI.ModelDto;
 using GGPlatoform.Domain.Entity;
 using log4net;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,7 @@ namespace GGPlatform.WebAPI.Controllers
         public AuthorityManagementController(IMapper mapper, IAuthorityManagementService authorityManagementService, IRoleService roleService)
         {
             _mapper = mapper;
-            log = LogManager.GetLogger(Startup.repository.Name, typeof(AuthorityManagementController)); ;
+            log = LogManager.GetLogger(Startup._repository.Name, typeof(AuthorityManagementController)); ;
             _authorityManagementService = authorityManagementService;
             _roleService = roleService;
         }
@@ -34,16 +35,17 @@ namespace GGPlatform.WebAPI.Controllers
         [Route("AddMenu")]
         [HttpPost]
         [Authorize]
-        public IActionResult AddMenu([FromBody] Menu  menu) {
-            var resultData= new ResultData();
+        public IActionResult AddMenu([FromBody] Menu menu)
+        {
+            var resultData = new ResultData();
             try
             {
                 menu.ID = Snowflake.Instance().GetId();
                 menu.CreateTime = DateTime.Now;
                 menu.LastUpdateTime = DateTime.Now;
-                
+
                 _authorityManagementService.Insert(menu);
-                log.Info($"添加信息：，成功");               
+                log.Info($"添加信息：，成功");
                 resultData.Data = menu.ID;
             }
             catch (Exception ex)
@@ -58,16 +60,18 @@ namespace GGPlatform.WebAPI.Controllers
         [Route("AddRole")]
         [HttpPost]
         //[Authorize]
-        public IActionResult AddRole([FromBody] Role role) {       
-            ResultData resultData = new ResultData();
-
+        public IActionResult AddRole([FromBody]RoleDto role)
+        {
+            var resultData = new ResultData();
+            if (!ModelState.IsValid)
+                return BadRequest(role);
             try
             {
-                role.ID = Snowflake.Instance().GetId();
-                role.CreateTime = DateTime.Now;
-                role.LastUpdateTime = DateTime.Now;
-
-                _roleService.Insert(role);
+                var roleModel = _mapper.Map<Role>(role);
+                roleModel.ID = Snowflake.Instance().GetId();
+                roleModel.CreateTime = DateTime.Now;
+                roleModel.LastUpdateTime = DateTime.Now;
+                _roleService.Insert(roleModel);
                 log.Info($"添加成功");
                 resultData.Data = null;
             }
@@ -76,9 +80,12 @@ namespace GGPlatform.WebAPI.Controllers
                 resultData.State = Status.Fail.ToString();
                 resultData.Msg = "添加角色失败！";
                 log.Error($"添加菜单错误信息：{ex}");
-                throw;
+
             }
             return Ok(resultData);
+
+
+
         }
     }
 }

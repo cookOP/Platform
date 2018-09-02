@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using GGPlatform.Application.IService;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GGPlatform.WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]    
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -25,30 +26,34 @@ namespace GGPlatform.WebAPI.Controllers
         [HttpPost]
         [Route("AddUser")]
         [Authorize]
-        public IActionResult AddUser([FromBody]Users users) {
+        public IActionResult AddUser([FromBody]Users users)
+        {
             if (string.IsNullOrEmpty(users.UserName)) return Ok("用户名不能为空!");
-            if (string.IsNullOrEmpty(users.Password)) return Ok("密码不能为空!");
-            //users.ID = Guid.NewGuid();
+            if (string.IsNullOrEmpty(users.Password)) return Ok("密码不能为空!");           
             users.LastUpdateTime = DateTime.Now;
             users.CreateTime = DateTime.Now;
             _userService.Insert(users);
-            ResultData reusltData = new ResultData();          
-            reusltData.State = Enum.Status.Succeed.ToString();
-            reusltData.Data =null;
+            var reusltData = new ResultData
+            {
+                State = Enum.Status.Succeed.ToString(),
+                Data = null
+            };
             return Ok(reusltData);
         }
 
         [HttpGet]
-        [Route("GetAllUser")] 
-        [Authorize]        
+        [Route("GetAllUser")]
+        // [Authorize]        
         public IActionResult GetAllUser()
         {
-            ResultData reusltData = new ResultData();
-            reusltData.State = Enum.Status.Succeed.ToString();           
-            reusltData.Data = Mapper.Map<UserDto>(_userService.GetAllList());
+            var reusltData = new ResultData
+            {
+                State = Enum.Status.Succeed.ToString(),
+                Data = _userService.GetAllList()
+            };
             return Ok(reusltData);
         }
-       
-        
+
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using GGPlatform.Application.IService;
+﻿using AutoMapper;
+using GGPlatform.Application.IService;
+using GGPlatform.Application.ModelDto;
 using GGPlatoform.Domain.Entity.User;
 using GGPlatoform.Domain.Interface;
 using System;
@@ -13,9 +15,11 @@ namespace GGPlatform.Application.Service
     public class UserService : IUserService
     {
         private readonly IUserRepository _user;
-        public UserService(IUserRepository user)
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository user,IMapper mapper)
         {
             _user = user;
+            _mapper = mapper;
         }
         public IQueryable<Users> Table => _user.Table;
 
@@ -26,12 +30,14 @@ namespace GGPlatform.Application.Service
 
         public IQueryable<Users> GetAll()
         {
+
             return _user.GetAll();
         }
 
-        public List<Users> GetAllList()
+        public List<UsersDto> GetAllList()
         {
-            return _user.GetAllList();
+            var result = _mapper.Map<List<UsersDto>> (_user.GetAllList());
+            return result;
         }
 
         public List<Users> GetAllList(Expression<Func<Users, bool>> predicate)

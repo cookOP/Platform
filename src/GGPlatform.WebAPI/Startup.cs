@@ -5,6 +5,7 @@ using GGPlatform.Infrastructure;
 using GGPlatform.Infrastructure.Data;
 using GGPlatform.Infrastructure.Repository;
 using GGPlatform.WebAPI.AutoMapper;
+using GGPlatform.WebAPI.Filter;
 using GGPlatoform.Domain.Interface;
 using log4net;
 using log4net.Config;
@@ -27,14 +28,14 @@ namespace GGPlatform.WebAPI
 {
     public class Startup
     {
-        public static ILoggerRepository repository
+        public static ILoggerRepository _repository
         {
             get; set;
         }
         public Startup(IConfiguration configuration)
         {
-            repository = LogManager.CreateRepository("NETCoreRepository");
-            XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
+            _repository = LogManager.CreateRepository("NETCoreRepository");
+            XmlConfigurator.Configure(_repository, new FileInfo("log4net.config"));
 
             Configuration = configuration;
         }
@@ -99,8 +100,6 @@ namespace GGPlatform.WebAPI
             });
             #endregion
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             #region AutoMapper
             //install-package   AutoMapper
             //install - package   AutoMapper.Extensions.Microsoft.DependencyInjection
@@ -109,8 +108,22 @@ namespace GGPlatform.WebAPI
             //    cfg.AddProfile(new AutomapperProfile());
             //});
             //services.AddSingleton<IMapper>(sp => _mapperConfiguration.CreateMapper());
+
+            //var config = new MapperConfiguration(cfg =>
+            // {
+            //     cfg.AddProfile<AutomapperProfile>();
+            // });
+            //services.AddTransient(config);
+            //services.AddSingleton(config);
+            //services.AddScoped<IMapper, Mapper>();
             services.AddAutoMapper();
             #endregion
+
+            //services.AddMvc(options =>
+            //{
+            //    options.Filters.Add<ValidateModelAttribute>();
+            //}).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
         }
 
@@ -128,7 +141,7 @@ namespace GGPlatform.WebAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "TwBusManagement API V1");
             });
             //AutoMapper 自己定义注册
-             Mappings.RegisterMappings();
+            Mappings.RegisterMappings();
             //用户授权
             app.UseAuthentication();
             app.UseMvc();

@@ -57,5 +57,10 @@ namespace GGPlatform.Application.Service
         {
             _authorityManagement.Update(model);
         }
+
+        List<object> IServiceBase<Menu, object>.GetAllList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

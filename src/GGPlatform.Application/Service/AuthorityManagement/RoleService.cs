@@ -57,5 +57,10 @@ namespace GGPlatform.Application.Service
         {
             _roleService.Update(model);
         }
+
+        List<object> IServiceBase<Role, object>.GetAllList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
